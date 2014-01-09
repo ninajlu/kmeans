@@ -36,6 +36,19 @@ var points = [];
 
 /* For each point, assign it to the cluster represented by the closest centroid */
 function assignCentroids() {
+  for(var i=0; i<points.length; i++){
+    var point=points[i];
+    var minCen=null;
+    var minVal=Number.MAX_VALUE;
+    for(var j=0; j<centroids.length; j++){
+      var distance=Math.sqrt(Math.pow(centroids[j].x-points[i].x,2) +Math.pow(centroids[j].y-points[i].y,2) )
+      if(distance<minVal){
+        minVal=distance;
+        minCen=centroids[j];
+      }
+    }
+    points[i].centroid=minCen;
+  }
   
 }
 
@@ -43,5 +56,21 @@ function assignCentroids() {
   The new position should be the mean of the positions of the points assigned to it.
 */
 function updateCentroids() {
-  
+  for(var i=0; i<centroids.length; i++){
+    var center=centroids[i];
+    var minCen=centroids[i];
+    var minVal=Number.MAX_VALUE;
+    var sumX=0;
+    var sumY=0;
+    var count=0;
+    for(var j=0; j<points.length; j++){
+      if(points[j].centroid.x==center.x && points[j].centroid.y==center.y){
+        sumX+=points[j].x;
+        sumY+=points[j].y;
+        count++;
+      }
+    }
+    centroids[i].x=sumX/count;
+    centroids[i].y=sumY/count;
+  }
 }
